@@ -12,7 +12,9 @@ const server = http.createServer(app)
 const io = require('socket.io').listen(server)
 io.on('connection', (socket)=>{
     console.log('socket connected');
+    console.log(socket.id)
     socket.on('friend request', (data)=>{
+        console.log(socket.id)
         userCRUD.addFriend(data);
        
         socket.emit(data.senderId, {_id: data.receiverId,name:data.receiverName})
