@@ -13,7 +13,7 @@ const createPost = async (postedValue, userId) => {
     return await User.updateOne({ _id: userId }, { $push: { posts: postedValue } });
 }
 const search = async (searchValue) => {
-    const result = await User.find({ $text: { $search: searchValue } },{name:1, relationship:1,friendSuggests:1, });
+    const result = await User.find({ $text: { $search: searchValue } },{name:1, relationship:1,friendSuggests:1, friendRequests:1 });0
     return result;
 }
 const searchProfile = async (data) =>{
