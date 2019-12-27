@@ -16,7 +16,7 @@ io.on('connection',  (socket)=>{
     socket.on('addFriend',async  (data)=>{
         const notiData = await userCRUD.addFriend(data)
         socket.emit(`${data.senderId}friendRequest`, {_id: data.receiverId,name:data.receiverName})
-        socket.broadcast.emit(`${data.receiverId}noti`,notiData);
+        socket.broadcast.emit(`${data.receiverId}friendSuggestNoti`,notiData);
     })
     socket.on('cancel request', (data)=>{
         userCRUD.cancelRequest(data);

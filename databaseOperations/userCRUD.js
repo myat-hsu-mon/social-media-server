@@ -25,12 +25,12 @@ const addFriend = async (data) =>{
         senderId: data.senderId,
         senderName: data.senderName,
     }
-     await User.updateOne({_id:data.senderId},{$push:{friendRequests:data.receiverId}, $inc:{numberOfFriendRequests:1}});
-     await User.updateOne({_id:data.receiverId},{$addToSet:{friendSuggests:data.senderId, friendSuggestsForNoti:sender},  $inc:{numberOfFriendSuggests:1}});
-    //  const result1 = await User.findOne({_id:data.senderId},{friendRequests:1,name:1,numberOfFriendRequests:1});
-    return await User.findOne({_id:data.receiverId},{friendSuggestsForNoti:1,numberOfFriendSuggests:1});
-    
-    
+    await User.updateOne({_id:data.senderId},{$push:{friendRequests:data.receiverId}, 
+        $inc:{numberOfFriendRequests:1}});
+    await User.updateOne({_id:data.receiverId},{$addToSet:{friendSuggests:data.senderId,
+         friendSuggestsForNoti:sender},  $inc:{numberOfFriendSuggests:1}});
+    return await User.findOne({_id:data.receiverId},{friendSuggestsForNoti:1,
+        numberOfFriendSuggests:1});   
 }
 const cancelRequest = async (data)=>{
     await User.updateOne({_id:data.receiverId},{$pull:{friendSuggests:{senderId:data.senderId}}, $inc:{numberOfFriendSuggests:-1}});
