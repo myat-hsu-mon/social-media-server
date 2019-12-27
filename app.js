@@ -13,12 +13,10 @@ const io = require('socket.io').listen(server)
 io.on('connection', (socket)=>{
     console.log('socket connected');
     console.log(socket.id)
-    socket.on('friend request', (data)=>{
-        console.log(socket.id)
+    socket.on('addFriend', (data)=>{
         userCRUD.addFriend(data);
-       
         socket.emit(data.senderId, {_id: data.receiverId,name:data.receiverName})
-        socket.broadcast.emit(data.receiverId,{_id:data.senderId,name:data.senderName});
+        socket.broadcast.emit(data.receiverId,{id:data.senderId,name:data.senderName});
     })
     socket.on('cancel request', (data)=>{
         userCRUD.cancelRequest(data);
