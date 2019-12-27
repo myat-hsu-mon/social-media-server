@@ -16,41 +16,33 @@ io.on('connection',  (socket)=>{
     socket.on('addFriend',async  (data)=>{
         const notiData = await userCRUD.addFriend(data)
         socket.emit(`${data.senderId}friendRequest`, {_id: data.receiverId,name:data.receiverName})
-        socket.broadcast.emit(`${data.receiverId}noti`,notiData);
+        socket.broadcast.emit(`${data.receiverId}friendSuggestNoti`,notiData);
     })
-    socket.on('cancel request', (data)=>{
-        userCRUD.cancelRequest(data);
+
+    socket.on('cancelRequest', async (data)=>{
+        const receiver = await userCRUD.cancelRequest(data);
+        socket.emit(`${data.senderId}canceledRequest`,receiver)
+        socket.broadcast.emit(`${data.receiverId}friendSuggestNoti`,receiver)
     })
+
+    socket.on('removeFriendSuggestsNoti',async(id)=>{
+       const numberOfFriendSuggests = await userCRUD.removeFriendSuggestsNoti(id);
+       socket.emit(`${id}removedFriendSuggestsNoti`,numberOfFriendSuggests);
+    })
+
+    
+
     socket.on('confirm', (data)=>{
         console.log("confirm data is ",data)
         userCRUD.confirm(data);
-        socket.emit(data.senderId,{_id:data.receiverId,name:data.receiverName})
+        socket.emit(`${data.senderId}confirmEmit`,{_id:data.receiverId,name:data.receiverName})
         // socket.emit(data.receiverId,{_id:data.senderId,name:data.senderName})
     })
     socket.on('create post',async(data)=>{
       
        const userWithNewPost =await userCRUD.createPost(data);
-       console.log("user with new post ",userWithNewPost);
         socket.emit(data.id,userWithNewPost);
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 })
 
 

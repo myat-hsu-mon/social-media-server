@@ -5,7 +5,6 @@ const userSchema = mongoose.Schema({
     password:String,
     posts:Array,
     friendRequests:Array,
-    numberOfFriendRequests:Number,
     friendSuggests:Array,
     friendSuggestsForNoti:Array,
     numberOfFriendSuggests:Number,
