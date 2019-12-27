@@ -15,8 +15,8 @@ io.on('connection', (socket)=>{
     console.log(socket.id)
     socket.on('addFriend', (data)=>{
         userCRUD.addFriend(data);
-        socket.emit(data.senderId, {_id: data.receiverId,name:data.receiverName})
-        socket.broadcast.emit(data.receiverId,{id:data.senderId,name:data.senderName});
+        socket.emit(`${data.senderId}friendRequest`, {_id: data.receiverId,name:data.receiverName})
+        socket.broadcast.emit(`${data.receiverId}noti`,{id:data.senderId,name:data.senderName});
     })
     socket.on('cancel request', (data)=>{
         userCRUD.cancelRequest(data);
