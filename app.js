@@ -27,9 +27,11 @@ io.on('connection', (socket)=>{
         socket.emit(data.senderId,{_id:data.receiverId,name:data.receiverName})
         // socket.emit(data.receiverId,{_id:data.senderId,name:data.senderName})
     })
-    socket.on('create post', (data)=>{
-        userCRUD.createPost(data);
-        socket.emit(data.id,{postedValue:data.postedValue});
+    socket.on('create post',async(data)=>{
+      
+       const userWithNewPost =await userCRUD.createPost(data);
+       console.log("user with new post ",userWithNewPost);
+        socket.emit(data.id,userWithNewPost);
     })
 
 

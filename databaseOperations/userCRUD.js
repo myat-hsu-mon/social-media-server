@@ -9,7 +9,10 @@ const login = async (user) => {
     return await User.findOne(user);
 }
 const createPost = async (data) => {
-    return await User.updateOne({ _id: data.id }, { $push: { posts: data.postedValue } });
+     await User.updateOne({ _id: data.id },{ $push: { posts: data.postedValue } });
+     const result = await User.findOne({_id : data.id});
+     console.log("Result is ",result);
+     return await result;
 }
 const search = async (searchValue) => {
     const result = await User.find({ $text: { $search: searchValue } },{name:1, posts:1, relationship:1,friendSuggests:1, friendRequests:1, friends:1});0
@@ -51,6 +54,9 @@ const confirm = async (data) =>{
     console.log("sender is",result);
     console.log("receiver is ", result2);
 }
+const find = async (data)=>{
+    return await User.findOne({_id:data.id});
+}
 module.exports = {
     existEmail,
     signup,
@@ -60,5 +66,6 @@ module.exports = {
     searchProfile,
     addFriend,
     cancelRequest,
-    confirm
+    confirm,
+    find
 }
