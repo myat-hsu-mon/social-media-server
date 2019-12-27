@@ -10,13 +10,13 @@ const port = 3000;
 app.set('port', port)
 const server = http.createServer(app)
 const io = require('socket.io').listen(server)
-io.on('connection', (socket)=>{
+io.on('connection',  (socket)=>{
     console.log('socket connected');
     console.log(socket.id)
-    socket.on('addFriend', (data)=>{
-        userCRUD.addFriend(data);
-        socket.emit(data.senderId, {_id: data.receiverId,name:data.receiverName})
-        socket.broadcast.emit(data.receiverId,{id:data.senderId,name:data.senderName});
+    socket.on('addFriend',async  (data)=>{
+        const notiData = await userCRUD.addFriend(data)
+        socket.emit(`${data.senderId}friendRequest`, {_id: data.receiverId,name:data.receiverName})
+        socket.broadcast.emit(`${data.receiverId}noti`,notiData);
     })
     socket.on('cancel request', (data)=>{
         userCRUD.cancelRequest(data);

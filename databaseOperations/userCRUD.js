@@ -23,11 +23,15 @@ const searchProfile = async (data) =>{
     return await User.findOne({_id:data.id},{name:1,posts:1});
 }
 const addFriend = async (data) =>{
-   
+    const sender = {
+        senderId: data.senderId,
+        senderName: data.senderName,
+    }
      await User.updateOne({_id:data.senderId},{$push:{friendRequests:data.receiverId}, $inc:{numberOfFriendRequests:1}});
-     await User.updateOne({_id:data.receiverId},{$addToSet:{friendSuggests:data.senderId},  $inc:{numberOfFriendSuggests:1}});
+     await User.updateOne({_id:data.receiverId},{$addToSet:{friendSuggests:data.senderId, friendSuggestsForNoti:sender},  $inc:{numberOfFriendSuggests:1}});
     //  const result1 = await User.findOne({_id:data.senderId},{friendRequests:1,name:1,numberOfFriendRequests:1});
-    //  const result2 = await User.findOne({_id:data.receiverId},{friendSuggests:1,name:1,numberOfFriendSuggests:1});
+    return await User.findOne({_id:data.receiverId},{friendSuggestsForNoti:1,numberOfFriendSuggests:1});
+    
     
 }
 const cancelRequest = async (data)=>{
