@@ -35,19 +35,29 @@ io.on('connection',  (socket)=>{
         socket.to(user.senderId+''+user.receiverId).emit('message', user)
     })
 
-    socket.on('confirm', (data)=>{
-        console.log("confirm data is ",data)
-        userCRUD.confirm(data);
-        socket.emit(`${data.senderId}confirmEmit`,{_id:data.receiverId,name:data.receiverName})
+    socket.on('acceptRequest',async (data)=>{
+        const sender = await userCRUD.acceptRequest(data);
+       socket.emit(`${data.senderId}acceptedRequest`,sender);
         // socket.emit(data.receiverId,{_id:data.senderId,name:data.senderName})
     })
-
-    socket.on('create post',async(data)=>{
-      
-       const userWithNewPost =await userCRUD.createPost(data);
-        socket.emit(data.id,userWithNewPost);
+    
+    socket.on('sendMessage', (msg)=>{
+        // db operation
+        socket.emit(`${msg.receiverId}receivedMessage`, msg)
     })
-})
+    // socket.on('friends',  async (data) =>{
+    //     console.log("data in app :", data);
+    //     const friendsWithIdAndName = await userCRUD.getFriends(data);
+    //     // socket.emit('${data.id}friendsWithIdAndName',friendsWithIdAndName);
+    // })
+
+//     socket.on('create post',async(data)=>{
+      
+//        const userWithNewPost =await userCRUD.createPost(data);
+//         socket.emit(data.id,userWithNewPost);
+//     })
+
+ })
 
 
 app.get('/',(req, res)=>{
