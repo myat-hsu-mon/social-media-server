@@ -30,32 +30,29 @@ io.on('connection',  (socket)=>{
        socket.emit(`${id}removedFriendSuggestsNoti`,numberOfFriendSuggests);
     })
 
-    socket.on('joinOneToOneChannel', (user)=>{
-        socket.join(user.senderId+''+user.receiverId)
-        socket.to(user.senderId+''+user.receiverId).emit('message', user)
-    })
-
     socket.on('acceptRequest',async (data)=>{
         const sender = await userCRUD.acceptRequest(data);
        socket.emit(`${data.senderId}acceptedRequest`,sender);
         // socket.emit(data.receiverId,{_id:data.senderId,name:data.senderName})
     })
-    
-    socket.on('sendMessage', (msg)=>{
-        // db operation
-        socket.emit(`${msg.receiverId}receivedMessage`, msg)
-    })
-    // socket.on('friends',  async (data) =>{
-    //     console.log("data in app :", data);
-    //     const friendsWithIdAndName = await userCRUD.getFriends(data);
-    //     // socket.emit('${data.id}friendsWithIdAndName',friendsWithIdAndName);
-    // })
 
-//     socket.on('create post',async(data)=>{
+    socket.on('sendMessage', (message)=>{
+        // db operation
+        console.log(socket.id);
+        socket.emit(`getMyMessage`, message)
+        socket.broadcast.emit(`${message.to}receivedMessage`, message)
+    })
+    socket.on('getFriendsLists',  async (data) =>{
+        const friendsWithIdAndName = await userCRUD.getFriends(data);
+        console.log("Friends with names ",friendsWithIdAndName);
+        socket.emit(`${data.id}friendsWithIdAndName`,friendsWithIdAndName);
+    })
+
+    socket.on('create post',async(data)=>{
       
-//        const userWithNewPost =await userCRUD.createPost(data);
-//         socket.emit(data.id,userWithNewPost);
-//     })
+       const userWithNewPost =await userCRUD.createPost(data);
+        socket.emit(data.id,userWithNewPost);
+    })
 
  })
 

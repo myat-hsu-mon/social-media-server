@@ -70,16 +70,11 @@ const acceptRequest = async (data) =>{
     return senderInfo;
 }
 
-// const getFriends = (data) =>{
-//     friendsWithIdAndName = data.friends.map(async(id) =>{
-//         name = await User.findOne({_id:id},{name:1});
-//         console.log("Name ", name)
-//         return name;
-//     })
-//     console.log("Friends with names", friendsWithIdAndName);
-//     return Promise.all(friendsWithIdAndName) ;
-// }
-
+const getFriends = async(data) =>{
+    return Promise.all(data.friends.map(async(id) =>{
+        return await User.findOne({_id:id},{name:1});       
+    }))
+}
 
 module.exports = {
     existEmail,
@@ -92,5 +87,5 @@ module.exports = {
     createPost,
     searchProfile,
     removeFriendSuggestsNoti,
-    // getFriends
+    getFriends
 }
