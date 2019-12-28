@@ -36,17 +36,18 @@ io.on('connection',  (socket)=>{
         // socket.emit(data.receiverId,{_id:data.senderId,name:data.senderName})
     })
 
-    // socket.on('friends',  async (data) =>{
-    //     console.log("data in app :", data);
-    //     const friendsWithIdAndName = await userCRUD.getFriends(data);
-    //     // socket.emit('${data.id}friendsWithIdAndName',friendsWithIdAndName);
-    // })
+    socket.on('friends',  async (data) =>{
+        const friendsWithIdAndName = await userCRUD.getFriends(data);
+        console.log("Friends with names ",friendsWithIdAndName);
+        socket.emit(`${data.id}friendsWithIdAndName`,friendsWithIdAndName);
+    })
 
-//     socket.on('create post',async(data)=>{
+
+    socket.on('create post',async(data)=>{
       
-//        const userWithNewPost =await userCRUD.createPost(data);
-//         socket.emit(data.id,userWithNewPost);
-//     })
+       const userWithNewPost =await userCRUD.createPost(data);
+        socket.emit(data.id,userWithNewPost);
+    })
 
  })
 
