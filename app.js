@@ -43,6 +43,12 @@ io.on('connection', (socket) => {
         socket.emit(`getMyMessage`, messages.messages[0].specificMessages)
         socket.broadcast.emit(`${msg.to}receivedMessage`, messages.messages[0].specificMessages)
     })
+
+    socket.on('getMessageList', async (id)=>{
+        const messageList = await userCRUD.getMessageList(id);
+        socket.emit('gotMessageList', messageList)
+    })
+
     socket.on('getFriendsLists',  async (data) =>{
         const friendsWithIdAndName = await userCRUD.getFriends(data);
         socket.emit(`${data.id}friendsWithIdAndName`, friendsWithIdAndName);

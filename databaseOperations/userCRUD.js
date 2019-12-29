@@ -41,28 +41,24 @@ const addFriend = (data)=>{
      return friend.removeFriendSuggestsNoti(id);
  }
  
+ const sendMessage = (message) =>{
+    return  saveMessage(message);
+ }
 
+ const getMessageList = async (id)=>{
+    const messageList = await User.findOne({_id:id},{messages:1, _id:0})
+    return messageList.messages;
+ }
 const getFriends = async (data) => {
     return Promise.all(data.friends.map(async (id) => {
         return await User.findOne({ _id: id }, { name: 1 });
     }))
 }
-const sendMessage = (message) =>{
-   return  saveMessage(message);
-}
+
 
 
 module.exports = {
-    existEmail,
-    signup,
-    login,
-    search,
-    addFriend,
-    cancelRequest,
-    acceptRequest,
-    createPost,
-    searchProfile,
-    removeFriendSuggestsNoti,
-    getFriends,
-    sendMessage,
+    existEmail, signup, login, search, addFriend,
+    cancelRequest, acceptRequest, createPost, searchProfile,
+    removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
 }
