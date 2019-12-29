@@ -46,8 +46,14 @@ const addFriend = (data)=>{
  }
 
  const getMessageList = async (id)=>{
-    const messageList = await User.findOne({_id:id},{messages:1, _id:0})
-    return messageList.messages;
+    let messageList = await User.findOne({_id:id},{messages:1, _id:0})
+    messageList = messageList.messages.map( user =>{
+        return user.conversationId;
+    })
+    return Promise.all(messageList.map( id =>{
+        return User.findOne({_id:id}, {name:1})
+    }))
+   
  }
 const getFriends = async (data) => {
     return Promise.all(data.friends.map(async (id) => {

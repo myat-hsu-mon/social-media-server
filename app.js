@@ -46,6 +46,7 @@ io.on('connection', (socket) => {
 
     socket.on('getMessageList', async (id)=>{
         const messageList = await userCRUD.getMessageList(id);
+        console.log(messageList)
         socket.emit('gotMessageList', messageList)
     })
 
