@@ -25,9 +25,9 @@ io.on('connection', (socket) => {
         socket.broadcast.emit(`${data.receiverId}friendSuggestNoti`, receiver)
     })
 
-    socket.on('removeFriendSuggestsNoti', async(id) => {
-        const numberOfFriendSuggests = await userCRUD.removeFriendSuggestsNoti(id);
-        socket.emit(`${id}removedFriendSuggestsNoti`, numberOfFriendSuggests);
+    socket.on('removeFriendSuggestsNoti',async(id)=>{
+       const numberOfFriendSuggests = await userCRUD.removeFriendSuggestsNoti(id);
+       socket.emit(`${id}removedFriendSuggestsNoti`,numberOfFriendSuggests);
     })
 
     socket.on('acceptRequest', async(data) => {
@@ -36,7 +36,14 @@ io.on('connection', (socket) => {
         // socket.emit(data.receiverId,{_id:data.senderId,name:data.senderName})
     })
 
-    socket.on('friends', async(data) => {
+    socket.on('sendMessage', async (msg)=>{
+        // db operation
+       const messages = await userCRUD.saveMessage(msg);
+       console.log("Specific messages inside in app : ",messages.messages[0].specificMessages);
+        socket.emit(`getMyMessage`, messages.messages[0].specificMessages)
+        socket.broadcast.emit(`${msg.to}receivedMessage`, messages.messages[0].specificMessages)
+    })
+    socket.on('getFriendsLists',  async (data) =>{
         const friendsWithIdAndName = await userCRUD.getFriends(data);
         console.log("Friends with names ", friendsWithIdAndName);
         socket.emit(`${data.id}friendsWithIdAndName`, friendsWithIdAndName);
@@ -47,10 +54,10 @@ io.on('connection', (socket) => {
         socket.emit(data.id, userWithNewPost);
     })
 
-    socket.on('sendMessage', message =>{
-        console.log("send message:",message);
-        socket.emit('receivedMessage',message);
-    })
+    // socket.on('sendMessage', message =>{
+    //     console.log("send message:",message);
+    //     socket.emit('receivedMessage',message);
+    // })
 
     
 
