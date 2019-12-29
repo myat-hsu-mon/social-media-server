@@ -6,15 +6,18 @@ const saveMessage = async (message) => {
         senderId: message.from,
         messageBody: message.body
     }
-    const isConversationInSender = await User.updateOne({ $and: [{ _id: message.from }, { "messages.conversationId": { $eq: message.to } }] }, {
+    const isConversationInSender = await User.updateOne(
+    { $and: [{ _id: message.from }, { "messages.conversationId": { $eq: message.to } }] }, 
+    {
         $push: { "messages.$.specificMessages": specificMessage }
     })
-    const isConversationInReceiver = await User.updateOne({ $and: [{ _id: message.to }, { "messages.conversationId": { $eq: message.from } }] }, {
+    const isConversationInReceiver = await User.updateOne(
+    { $and: [{ _id: message.to }, { "messages.conversationId": { $eq: message.from } }] }, 
+    {
         $push: { "messages.$.specificMessages": specificMessage }
     })
-    console.log("Is Conversation ok", isConversationInReceiver);
-
-
+    
+    
     /// conversation does not exist
     if (!isConversationInSender.n) {
         messageForSender = {
