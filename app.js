@@ -38,14 +38,13 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', async (msg)=>{
         // db operation
-       const messages = await userCRUD.saveMessage(msg);
+       const messages = await userCRUD.sendMessage(msg);
        console.log("Specific messages inside in app : ",messages.messages[0].specificMessages);
         socket.emit(`getMyMessage`, messages.messages[0].specificMessages)
         socket.broadcast.emit(`${msg.to}receivedMessage`, messages.messages[0].specificMessages)
     })
     socket.on('getFriendsLists',  async (data) =>{
         const friendsWithIdAndName = await userCRUD.getFriends(data);
-        console.log("Friends with names ", friendsWithIdAndName);
         socket.emit(`${data.id}friendsWithIdAndName`, friendsWithIdAndName);
     })
 
