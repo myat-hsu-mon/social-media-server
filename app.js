@@ -60,10 +60,11 @@ io.on('connection', (socket) => {
         socket.emit(data.id, userWithNewPost);
     })
 
-    // socket.on('sendMessage', message =>{
-    //     console.log("send message:",message);
-    //     socket.emit('receivedMessage',message);
-    // })
+    socket.on('openMessageConversation', async (conversationData)=>{
+        const conversation = await userCRUD.openMessageConversation(conversationData);
+        socket.emit('receivedMessageConversation', conversation.messages[0].specificMessages)
+        
+    })
 
     
 

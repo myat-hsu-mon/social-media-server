@@ -1,5 +1,5 @@
 const User = require('../schemas/user');
-const saveMessage = require('./message')
+const messageOperation = require('./message')
 const friend = require('./friend')
 const existEmail = async (email) => {
     return await User.findOne({ email });
@@ -8,7 +8,7 @@ const signup = async (user) => {
     return await User.create(user);
 }
 const login = async (user) => {
-    return await User.findOne(user);
+    return await User.findOne(user,{name:1, friendSuggestsForNoti:1});
 }
 const createPost = async (data) => {
     await User.updateOne({ _id: data.id }, { $push: { posts: data.postedValue } });
@@ -42,7 +42,7 @@ const addFriend = (data)=>{
  }
  
  const sendMessage = (message) =>{
-    return  saveMessage(message);
+    return  messageOperation.saveMessage(message);
  }
 
  const getMessageList = async (id)=>{
@@ -52,8 +52,11 @@ const addFriend = (data)=>{
     })
     return Promise.all(messageList.map( id =>{
         return User.findOne({_id:id}, {name:1})
-    }))
-   
+    }))  
+ }
+ 
+ const openMessageConversation = (conversationData)=>{
+    return messageOperation.openMessageConversation(conversationData)
  }
 const getFriends = async (data) => {
     return Promise.all(data.friends.map(async (id) => {
@@ -67,4 +70,5 @@ module.exports = {
     existEmail, signup, login, search, addFriend,
     cancelRequest, acceptRequest, createPost, searchProfile,
     removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
+    openMessageConversation,
 }
