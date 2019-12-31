@@ -17,12 +17,12 @@ const createPost = async (data) => {
     return await result;
 }
 const search = async (searchValue) => {
-    const result = await User.find({ $text: { $search: searchValue } }, { name: 1, posts: 1, relationship: 1, friendSuggests: 1, friendRequests: 1, friends: 1 }); 0
+    const result = await User.find({ $text: { $search: searchValue } }, { name: 1, posts: 1, relationship: 1, friendSuggests: 1, friendRequests: 1, friends: 1 }); 
     return result;
 }
-const searchProfile = async (data) => {
-    console.log("id", data.id);
-    return await User.findOne({ _id: data.id }, { name: 1, posts: 1 });
+const getSearchUserData = async (id) => {
+    console.log("id", id);
+    return await User.findOne({ _id: id }, { name: 1, posts: 1 });
 }
 
 const addFriend = (data)=>{
@@ -61,10 +61,8 @@ const getFriends = async (data) => {
     }))
 }
 
-
-
 module.exports = {
     existEmail, signup, login, search, addFriend,
-    cancelRequest, acceptRequest, createPost, searchProfile,
+    cancelRequest, acceptRequest, createPost, getSearchUserData,
     removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
 }

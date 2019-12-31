@@ -85,7 +85,7 @@ app.post('/signup', userController.signup);
 app.post('/login', userController.login);
 app.post('/post', userController.createPost);
 app.post('/search', userController.search);
-app.post('/profile', userController.searchProfile);
+app.post('/profile', userController.getSearchUserData);
 
 
 server.listen(port, () => {
