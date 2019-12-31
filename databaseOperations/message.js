@@ -47,4 +47,16 @@ const saveMessage = async (message) => {
     return await User.findOne({ _id: message.from ,"messages.conversationId":message.to},
         {"messages.$.specificMessages": 1, _id: 0})
 }
-module.exports = saveMessage;
+
+const openMessageConversation = async (conversationData)=>{
+    return await User.findOne(
+    {
+        $and:[{_id:conversationData.viewerId},{"messages.conversationId":conversationData.conversationId}]
+    },
+    {"messages.$.specificMessages":1, _id:0})  
+}
+
+module.exports = {
+    saveMessage,
+    openMessageConversation
+};

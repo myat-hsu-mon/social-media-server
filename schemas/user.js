@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const specificMessageSchema = mongoose.Schema({
     senderId : String,
     messageBody : String
@@ -12,6 +13,7 @@ const userSchema = mongoose.Schema({
     name : String,
     email : String,
     password : String,
+    messages : [ messagesSchema ],
     posts : Array,
     friendRequests : Array,
     friendSuggests : Array,
@@ -19,7 +21,6 @@ const userSchema = mongoose.Schema({
     numberOfFriendSuggests : Number,
     friends : Array,
     numberOfFriends : Number,
-    messages : [ messagesSchema ],
     relationship : {
         type : String,
         default :'Add Friend'
