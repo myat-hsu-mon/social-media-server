@@ -11,8 +11,14 @@ app.set('port', port)
 const server = http.createServer(app)
 const io = require('socket.io').listen(server)
 io.on('connection', (socket) => {
-    console.log('socket connected');
-    console.log(socket.id)
+    let users = {}
+    console.log('a user is  connected to server');
+    //console.log(socket.id)
+    socket.on('login', (user)=>{
+        console.log(`A user ${user.userName} with ID ${user.userId} connected to server:`);
+        users[socket.id] = user.userName;
+        console.log("login users:", users)
+    })
     socket.on('addFriend', async(data) => {
         const notiData = await userCRUD.addFriend(data)
         socket.emit(`${data.senderId}friendRequest`, { _id: data.receiverId, name: data.receiverName })
@@ -61,22 +67,23 @@ io.on('connection', (socket) => {
     })
 
     socket.on('openMessageConversation', async (conversationData)=>{
-        const conversation = await userCRUD.openMessageConversation(conversationData);
-        socket.emit('receivedMessageConversation', conversation.messages[0].specificMessages)
+        let conversation = await userCRUD.openMessageConversation(conversationData);
+        if(conversation){
+            conversation = conversation.messages[0].specificMessages;
+        }else{
+            conversation = [];
+        }
+        console.log("conversation:",conversation)
+        socket.emit('receivedMessageConversation', conversation)
         
     })
-
     
+    socket.on('disconnect', ()=>{
+        console.log(`A user with user Id ${users[socket.id]} is disconnect`)
+    })
 
 
-
-
-
-
-
-
-
-})
+})// end of socket
 
 
 app.get('/', (req, res) => {

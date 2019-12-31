@@ -49,14 +49,13 @@ const saveMessage = async (message) => {
 }
 
 const openMessageConversation = async (conversationData)=>{
-    console.log('conversationId:',conversationData.conversationId);
-    // db operation
-   return await User.findOne(
+    return await User.findOne(
     {
         $and:[{_id:conversationData.viewerId},{"messages.conversationId":conversationData.conversationId}]
     },
-    {"messages.$.specificMessages":1, _id:0})
+    {"messages.$.specificMessages":1, _id:0})  
 }
+
 module.exports = {
     saveMessage,
     openMessageConversation
