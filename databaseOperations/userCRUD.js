@@ -17,8 +17,14 @@ const sendLogin = (user) =>{
     return  LogInOut.sendLogin(user);
 }
 const createPost = async (data) => {
-    await User.updateOne({ _id: data.id }, { $push: { posts: data.postedValue } });
-    const result = await User.findOne({ _id: data.id },{posts:1});
+    const post = {
+        authorId : data.id,
+        authorName : data.name,
+        body : data.postedValue        
+    }
+    await User.updateOne({ _id : data.id }, { $push : { posts : post } });
+    const result = await User.findOne({ _id : data.id },{posts : 1});
+    console.log("posts:", result);
     return await result;
 }
 const search = async (searchValue) => {

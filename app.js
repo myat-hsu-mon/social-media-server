@@ -73,9 +73,9 @@ io.on('connection', (socket) => {
     })
 
     socket.on('create post', async(data) => {
-        const userWithNewPost = await userCRUD.createPost(data);
-        console.log("post inside app.js :",userWithNewPost);
-        socket.emit(data.id, userWithNewPost);
+        const createPost = await userCRUD.createPost(data);//postId,postAuthorId,posts
+        console.log("post inside app.js :",createPost);
+        // socket.emit(data.id, createPost);
     })
 
     socket.on('openMessageConversation', async (conversationData)=>{
