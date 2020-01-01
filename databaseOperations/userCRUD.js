@@ -2,6 +2,7 @@ const User = require('../schemas/user');
 const messageOperation = require('./message')
 const friendRelation = require('./friend-relation')
 const LogInOut = require('./logged-in-out')
+const post = require('./post')
 const existEmail = async (email) => {
     return await User.findOne({ email });
 }
@@ -68,9 +69,12 @@ const getFriends = async (data) => {
     }))
 }
 
+const like = async (likeData)=>{
+    return post.like(likeData);
+}
 module.exports = {
     existEmail, signup, login, search, addFriend,
     cancelRequest, acceptRequest, createPost, getSearchUserData,
     removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
-    openMessageConversation, sendLogin
+    openMessageConversation, sendLogin, like
 }

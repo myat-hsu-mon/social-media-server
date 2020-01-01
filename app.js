@@ -89,6 +89,11 @@ io.on('connection', (socket) => {
         socket.emit('receivedMessageConversation', conversation)
         
     })
+
+    socket.on('like', async (likeData)=>{
+        const liked = await userCRUD.like(likeData);
+        console.log("liked:", liked)
+    })
     
     socket.on('disconnect', ()=>{
         console.log(`A user with user Id ${users[socket.id]} is disconnect`)

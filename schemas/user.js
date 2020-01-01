@@ -10,12 +10,27 @@ const messagesSchema = mongoose.Schema({
     specificMessages : [ specificMessageSchema ]
 })
 
+const commentSchema = mongoose.Schema({
+    authorName: String,
+    authorId: String,
+    body: String
+})
+const postSchema = mongoose.Schema({
+    authorName: String,
+    authorId: String,
+    body: String,
+    Likes:Array,
+    isLike: Boolean,
+    likeCount: Number,
+    comments:[commentSchema]
+})
+
 const userSchema = mongoose.Schema({
     name : String,
     email : String,
     password : String,
     messages : [ messagesSchema ],
-    posts : Array,
+    posts : [postSchema],
     friendRequests : Array,
     friendSuggests : Array,
     friendSuggestsForNoti : Array,
