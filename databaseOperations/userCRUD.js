@@ -8,12 +8,11 @@ const signup = async (user) => {
     return await User.create(user);
 }
 const login = async (user) => {
-    return await User.findOne(user,{name:1, friendSuggestsForNoti:1});
+    return await User.findOne(user,{name:1, friendSuggestsForNoti:1, friends:1, friendSuggests:1, friendRequests:1});
 }
 const createPost = async (data) => {
     await User.updateOne({ _id: data.id }, { $push: { posts: data.postedValue } });
-    const result = await User.findOne({ _id: data.id });
-    console.log("Result is ", result);
+    const result = await User.findOne({ _id: data.id },{posts:1});
     return await result;
 }
 const search = async (searchValue) => {

@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
 
     socket.on('create post', async(data) => {
         const userWithNewPost = await userCRUD.createPost(data);
+        console.log("post inside app.js :",userWithNewPost);
         socket.emit(data.id, userWithNewPost);
     })
 
