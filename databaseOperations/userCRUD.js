@@ -10,7 +10,7 @@ const signup = async (user) => {
     return await User.create(user);
 }
 const login = async (user) => {
-    return await User.findOne(user,{name:1, friendSuggestsForNoti:1, activeFriends:1});
+    return await User.findOne(user,{name:1, friendSuggestsForNoti: 1, activeFriends:1, posts: 1});
 }
 
 const sendLogin = (user) =>{
