@@ -1,6 +1,7 @@
 const User = require('../schemas/user');
 const messageOperation = require('./message')
-const friend = require('./friend')
+const friendRelation = require('./friend-relation')
+const LogInOut = require('./logged-in-out')
 const existEmail = async (email) => {
     return await User.findOne({ email });
 }
@@ -8,7 +9,11 @@ const signup = async (user) => {
     return await User.create(user);
 }
 const login = async (user) => {
-    return await User.findOne(user,{name:1, friendSuggestsForNoti:1});
+    return await User.findOne(user,{name:1, friendSuggestsForNoti:1, activeFriends:1});
+}
+
+const sendLogin = (user) =>{
+    return  LogInOut.sendLogin(user);
 }
 const createPost = async (data) => {
     await User.updateOne({ _id: data.id }, { $push: { posts: data.postedValue } });
@@ -26,19 +31,19 @@ const getSearchUserData = async (id) => {
 }
 
 const addFriend = (data)=>{
-     return friend.addFriend(data);
+     return friendRelation.addFriend(data);
  }
 
  const cancelRequest = (data)=>{
-     return friend.cancelRequest(data);
+     return friendRelation.cancelRequest(data);
  }
  
  const acceptRequest = (data)=>{
-     return friend.acceptRequest(data);
+     return friendRelation.acceptRequest(data);
  }
 
  const removeFriendSuggestsNoti = (id) =>{
-     return friend.removeFriendSuggestsNoti(id);
+     return friendRelation.removeFriendSuggestsNoti(id);
  }
  
  const sendMessage = (message) =>{
@@ -68,5 +73,5 @@ module.exports = {
     existEmail, signup, login, search, addFriend,
     cancelRequest, acceptRequest, createPost, getSearchUserData,
     removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
-    openMessageConversation,
+    openMessageConversation, sendLogin
 }

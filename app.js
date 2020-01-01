@@ -14,10 +14,19 @@ io.on('connection', (socket) => {
     let users = {}
     console.log('a user is  connected to server');
     //console.log(socket.id)
-    socket.on('login', (user)=>{
+    socket.on('login', async (user)=>{
         console.log(`A user ${user.userName} with ID ${user.userId} connected to server:`);
         users[socket.id] = user.userName;
         console.log("login users:", users)
+        let friends = await userCRUD.sendLogin(user)
+       // console.log(friends)
+        for(const friend of friends){
+            console.log(friend)
+            socket.broadcast.emit(`${friend._id}getActiveFriends`, friend.activeFriends)
+        }
+        
+        
+
     })
     socket.on('addFriend', async(data) => {
         const notiData = await userCRUD.addFriend(data)
@@ -43,11 +52,13 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendMessage', async (msg)=>{
-        // db operation
-       const messages = await userCRUD.sendMessage(msg);
-       console.log("Specific messages inside in app : ",messages.messages[0].specificMessages);
-        socket.emit(`getMyMessage`, messages.messages[0].specificMessages)
-        socket.broadcast.emit(`${msg.to}receivedMessage`, messages.messages[0].specificMessages)
+        console.log('socketID:', socket.id)
+        let messages = await userCRUD.sendMessage(msg);
+        console.log('sender and receiver:', msg)
+        messages = messages.messages[0].specificMessages
+        console.log("Specific messages inside in app : ",messages);
+        socket.emit(`getMyMessage`, messages)
+        socket.broadcast.emit(`${msg.to}receivedMessage`, messages)
     })
 
     socket.on('getMessageList', async (id)=>{
