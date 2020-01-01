@@ -9,6 +9,7 @@ const messagesSchema = mongoose.Schema({
     conversationId : String,
     specificMessages : [ specificMessageSchema ]
 })
+
 const userSchema = mongoose.Schema({
     name : String,
     email : String,
@@ -20,6 +21,7 @@ const userSchema = mongoose.Schema({
     friendSuggestsForNoti : Array,
     numberOfFriendSuggests : Number,
     friends : Array,
+    activeFriends: Array,
     numberOfFriends : Number,
     relationship : {
         type : String,
