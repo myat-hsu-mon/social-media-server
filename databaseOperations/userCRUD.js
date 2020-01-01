@@ -75,8 +75,12 @@ const getFriends = async (data) => {
     }))
 }
 
-const like = async (likeData)=>{
+const like = (likeData)=>{
     return post.like(likeData);
+}
+
+const dislike = (dislikeData)=>{
+    return post.dislike(dislikeData);
 }
 module.exports = {
     existEmail, signup, login, search, addFriend,

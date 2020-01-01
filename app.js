@@ -52,18 +52,14 @@ io.on('connection', (socket) => {
     })
 
     socket.on('sendMessage', async (msg)=>{
-        console.log('socketID:', socket.id)
         let messages = await userCRUD.sendMessage(msg);
-        console.log('sender and receiver:', msg)
-        messages = messages.messages[0].specificMessages
-        console.log("Specific messages inside in app : ",messages);
+        messages = messages.messages[0].specificMessages;
         socket.emit(`getMyMessage`, messages)
         socket.broadcast.emit(`${msg.to}receivedMessage`, messages)
     })
 
     socket.on('getMessageList', async (id)=>{
         const messageList = await userCRUD.getMessageList(id);
-        console.log(messageList)
         socket.emit('gotMessageList', messageList)
     })
 
@@ -85,7 +81,6 @@ io.on('connection', (socket) => {
         }else{
             conversation = [];
         }
-        console.log("conversation:",conversation)
         socket.emit('receivedMessageConversation', conversation)
         
     })
@@ -95,11 +90,16 @@ io.on('connection', (socket) => {
         console.log("liked:", liked)
     })
     
+    socket.on('dislike', async (dislikeData)=>{
+        const disliked = await userCRUD.dislike(dislikeData);
+        console.log("dislike:", disliked)
+    })
+
     socket.on('disconnect', ()=>{
         console.log(`A user with user Id ${users[socket.id]} is disconnect`)
     })
 
-
+    
 })// end of socket
 
 
