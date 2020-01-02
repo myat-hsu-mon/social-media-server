@@ -112,7 +112,6 @@ app.post('/post', userController.createPost);
 app.post('/search', userController.search);
 app.post('/profile', userController.getProfile);
 
-
 server.listen(port, () => {
     console.log('server is listening on port:', port)
 })

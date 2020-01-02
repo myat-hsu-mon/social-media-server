@@ -31,8 +31,7 @@ const search = async (searchValue) => {
     const result = await User.find({ $text: { $search: searchValue } }, { name: 1, posts: 1, relationship: 1, friendSuggests: 1, friendRequests: 1, friends: 1 }); 
     return result;
 }
-const getProfile = async (profileId) => {
-    
+const getProfile = async (profileId) => {    
     return await User.findOne({ _id: profileId }, { name: 1, posts: 1 });
 }
 
