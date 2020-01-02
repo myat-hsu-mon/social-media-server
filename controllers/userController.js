@@ -34,6 +34,7 @@ const search = async(req, res) => {
 }
 const getProfile = async(req, res) => {
     const { profileId } = req.body;
+    console.log("ProfileId userControllers:",profileId);
     const profileData = await userCRUD.getProfile(profileId);
     return res.json(profileData);
 }
