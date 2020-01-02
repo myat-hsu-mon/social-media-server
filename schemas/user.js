@@ -19,8 +19,11 @@ const postSchema = mongoose.Schema({
     authorName: String,
     authorId: String,
     body: String,
-    Likes:Array,
-    isLike: Boolean,
+    likes:Array,
+    isLike: {
+        type: Boolean,
+        default : false,
+    },
     likeCount: Number,
     comments:[commentSchema]
 })

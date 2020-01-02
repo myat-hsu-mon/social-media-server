@@ -4,7 +4,7 @@ const like = async (likeData)=>{
     const { postAuthorId, postId, likedUserId } = likeData;
     await User.updateOne(
         { $and:[{_id:postAuthorId},{"posts._id": postId}]},
-        { $push:{"posts.likes": likedUserId}, $inc:{"posts.$.likeCount": 1} }
+        { $push:{"posts.$.likes": likedUserId}, $inc:{"posts.$.likeCount": 1} }
         )
     return await User.findOne(
         { $and:[{_id: postAuthorId}, {"posts._id": postId}] }
