@@ -32,10 +32,10 @@ const search = async(req, res) => {
     return res.json(searchResult);
 
 }
-const getSearchUserData = async(req, res) => {
-    const { id } = req.body;
-    const searchUserData = await userCRUD.getSearchUserData(id);
-    return res.json(searchUserData);
+const getProfile = async(req, res) => {
+    const { profileId } = req.body;
+    const profileData = await userCRUD.getProfile(profileId);
+    return res.json(profileData);
 }
 
 module.exports = {
@@ -43,5 +43,5 @@ module.exports = {
     login,
     createPost,
     search,
-    getSearchUserData
+    getProfile
 }

@@ -10,7 +10,7 @@ const signup = async (user) => {
     return await User.create(user);
 }
 const login = async (user) => {
-    return await User.findOne(user,{name:1, friendSuggestsForNoti: 1, activeFriends:1, posts: 1});
+    return await User.findOne(user,{name:1, friendSuggestsForNoti: 1, activeFriends:1});
 }
 
 const sendLogin = (user) =>{
@@ -31,9 +31,9 @@ const search = async (searchValue) => {
     const result = await User.find({ $text: { $search: searchValue } }, { name: 1, posts: 1, relationship: 1, friendSuggests: 1, friendRequests: 1, friends: 1 }); 
     return result;
 }
-const getSearchUserData = async (id) => {
-    console.log("id", id);
-    return await User.findOne({ _id: id }, { name: 1, posts: 1 });
+const getProfile = async (profileId) => {
+    
+    return await User.findOne({ _id: profileId }, { name: 1, posts: 1 });
 }
 
 const addFriend = (data)=>{
@@ -84,7 +84,7 @@ const dislike = (dislikeData)=>{
 }
 module.exports = {
     existEmail, signup, login, search, addFriend,
-    cancelRequest, acceptRequest, createPost, getSearchUserData,
+    cancelRequest, acceptRequest, createPost, getProfile,
     removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
-    openMessageConversation, sendLogin, like
+    openMessageConversation, sendLogin, like, dislike
 }

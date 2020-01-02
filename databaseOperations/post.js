@@ -7,19 +7,21 @@ const like = async (likeData)=>{
         { $push:{"posts.$.likes": likedUserId}, $inc:{"posts.$.likeCount": 1} }
         )
     return await User.findOne(
-        { $and:[{_id: postAuthorId}, {"posts._id": postId}] }
+        { $and:[{_id: postAuthorId}, {"posts._id": postId}] }, 
+        { posts:1}
         )
 }
 
 const dislike = async (dislikeData)=>{
-    const { postAuthorId, postId, dislikedUserId } = dislikeData;
+    const { postAuthorId, postId, likedUserId } = dislikeData;
     await User.updateOne(
         { $and:[{_id:postAuthorId},{"posts._id": postId}]},
-        { $pull:{"posts.$.likes": dislikedUserId}, $inc:{"posts.$.likeCount": -1} }
+        { $pull:{"posts.$.likes": likedUserId}, $inc:{"posts.$.likeCount": -1} }
     )
     return await User.findOne(
         { $and:[{_id: postAuthorId}, {"posts._id": postId}] },
-        { "posts.$.likes":1, "posts.$.likeCount":1 }
+        { posts:1 }
+        
     )
 }
 

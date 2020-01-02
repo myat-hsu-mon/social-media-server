@@ -87,12 +87,12 @@ io.on('connection', (socket) => {
 
     socket.on('like', async (likeData)=>{
         const liked = await userCRUD.like(likeData);
-        console.log("liked:", liked)
+        socket.emit('liked', liked)
     })
     
     socket.on('dislike', async (dislikeData)=>{
         const disliked = await userCRUD.dislike(dislikeData);
-        console.log("dislike:", disliked)
+        socket.emit('disliked' , disliked)
     })
 
     socket.on('disconnect', ()=>{
@@ -110,7 +110,7 @@ app.post('/signup', userController.signup);
 app.post('/login', userController.login);
 app.post('/post', userController.createPost);
 app.post('/search', userController.search);
-app.post('/profile', userController.getSearchUserData);
+app.post('/profile', userController.getProfile);
 
 
 server.listen(port, () => {
