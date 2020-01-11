@@ -22,9 +22,8 @@ const createPost = async (data) => {
         authorName : data.name,
         body : data.postedValue        
     }
-    await User.updateOne({ _id : data.id }, { $push : { posts : post } });
+    await User.updateOne({ _id : data.id }, { $push : { posts : {$each : [post], $position:0} } });
     const result = await User.findOne({ _id : data.id },{posts : 1});
-    console.log("posts:", result);
     return await result;
 }
 const search = async (searchValue) => {
@@ -32,9 +31,7 @@ const search = async (searchValue) => {
     return result;
 }
 const getProfile = async (profileId) => {   
-    console.log("profileId in userCruds:",profileId) 
     const profileData = await User.findOne({ _id: profileId }, { name: 1, posts: 1 });
-    console.log("ProfileData in userCruds:",profileData)
     return profileData;
 }
 
@@ -84,9 +81,13 @@ const like = (likeData)=>{
 const dislike = (dislikeData)=>{
     return post.dislike(dislikeData);
 }
+
+const sendComment = (commentData)=>{
+    return post.sendComment(commentData);
+}
 module.exports = {
     existEmail, signup, login, search, addFriend,
     cancelRequest, acceptRequest, createPost, getProfile,
     removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
-    openMessageConversation, sendLogin, like, dislike
+    openMessageConversation, sendLogin, like, dislike, sendComment
 }

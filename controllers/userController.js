@@ -13,9 +13,9 @@ const signup = async(req, res) => {
 
 const login = async(req, res) => {
     const { email, password } = req.body;
-    // if(!email || !password){
-    //     return res.json({error:"Fill email or password"});
-    // }else
+    if(!email || !password){
+        return res.json({error:"Fill email or password"});
+    }else
     if (userCRUD.existEmail(email)) {
         return res.json(await userCRUD.login({ email }));
     } else {

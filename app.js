@@ -99,6 +99,12 @@ io.on('connection', (socket) => {
         console.log(`A user with user Id ${users[socket.id]} is disconnect`)
     })
 
+    socket.on('send comment', async(commentData)=>{
+        const commented = await userCRUD.sendComment(commentData);
+        console.log("commentsArray:",commented);
+        socket.emit('commented',commented);
+    })
+
     
 })// end of socket
 
