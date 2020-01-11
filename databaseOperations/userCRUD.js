@@ -17,24 +17,14 @@ const sendLogin = (user) =>{
     return  LogInOut.sendLogin(user);
 }
 const createPost = async (data) => {
-    const post = {
-        authorId : data.id,
-        authorName : data.name,
-        body : data.postedValue        
-    }
-    await User.updateOne({ _id : data.id }, { $push : { posts : post } });
-    const result = await User.findOne({ _id : data.id },{posts : 1});
-    console.log("posts:", result);
-    return await result;
+   return post.createPost(data);
 }
 const search = async (searchValue) => {
     const result = await User.find({ $text: { $search: searchValue } }, { name: 1, posts: 1, relationship: 1, friendSuggests: 1, friendRequests: 1, friends: 1 }); 
     return result;
 }
 const getProfile = async (profileId) => {   
-    console.log("profileId in userCruds:",profileId) 
     const profileData = await User.findOne({ _id: profileId }, { name: 1, posts: 1 });
-    console.log("ProfileData in userCruds:",profileData)
     return profileData;
 }
 

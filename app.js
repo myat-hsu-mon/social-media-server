@@ -68,10 +68,9 @@ io.on('connection', (socket) => {
         socket.emit(`${data.id}friendsWithIdAndName`, friendsWithIdAndName);
     })
 
-    socket.on('create post', async(data) => {
-        const createPost = await userCRUD.createPost(data);//postId,postAuthorId,posts
-        console.log("post inside app.js :",createPost);
-        // socket.emit(data.id, createPost);
+    socket.on('createPost', async(data) => {
+        const createdPost = await userCRUD.createPost(data);
+        socket.emit('createdPost', createdPost);
     })
 
     socket.on('openMessageConversation', async (conversationData)=>{
@@ -90,9 +89,9 @@ io.on('connection', (socket) => {
         socket.emit('liked', liked)
     })
     
-    socket.on('dislike', async (dislikeData)=>{
-        const disliked = await userCRUD.dislike(dislikeData);
-        socket.emit('disliked' , disliked)
+    socket.on('unlike', async (unlikeData)=>{
+        const unliked = await userCRUD.dislike(unlikeData);
+        socket.emit('unliked' , unliked)
     })
 
     socket.on('disconnect', ()=>{
