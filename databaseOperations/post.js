@@ -48,5 +48,5 @@ const sendComment = async(commentData)=>{
 
 
 module.exports = {
-    like, dislike,sendComment
+    like, dislike, sendComment
 }
