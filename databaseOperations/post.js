@@ -46,7 +46,17 @@ const sendComment = async(commentData)=>{
 }
 
 
-
+const createPost = async (data) => {
+    const post = {
+        authorId : data.id,
+        authorName : data.name,
+        body : data.postedValue        
+    }
+    await User.updateOne({ _id : data.id }, { $push : { posts : {$each : [post], $position:0} } });
+    const result = await User.findOne({ _id : data.id },{posts : 1});
+    return  result;
+    
+}
 module.exports = {
-    like, dislike, sendComment
+    like, dislike, sendComment,createPost
 }

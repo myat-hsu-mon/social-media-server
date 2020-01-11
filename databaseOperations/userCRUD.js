@@ -16,16 +16,11 @@ const login = async (user) => {
 const sendLogin = (user) =>{
     return  LogInOut.sendLogin(user);
 }
-const createPost = async (data) => {
-    const post = {
-        authorId : data.id,
-        authorName : data.name,
-        body : data.postedValue        
-    }
-    await User.updateOne({ _id : data.id }, { $push : { posts : {$each : [post], $position:0} } });
-    const result = await User.findOne({ _id : data.id },{posts : 1});
-    return await result;
+
+const createPost = (postData) =>{
+    return post.createPost(postData);
 }
+
 const search = async (searchValue) => {
     const result = await User.find({ $text: { $search: searchValue } }, { name: 1, posts: 1, relationship: 1, friendSuggests: 1, friendRequests: 1, friends: 1 }); 
     return result;
@@ -87,7 +82,7 @@ const sendComment = (commentData)=>{
 }
 module.exports = {
     existEmail, signup, login, search, addFriend,
-    cancelRequest, acceptRequest, createPost, getProfile,
+    cancelRequest, acceptRequest, getProfile,
     removeFriendSuggestsNoti, getFriends,  sendMessage, getMessageList,
-    openMessageConversation, sendLogin, like, dislike, sendComment
+    openMessageConversation, sendLogin, like, dislike, sendComment,createPost
 }
