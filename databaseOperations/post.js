@@ -29,7 +29,7 @@ const createPost = async (data)=>{
     const post = {
         authorId : data.id,
         authorName : data.name,
-        body : data.postedValue        
+        body : data.postedValue         
     }
     await User.updateOne({ _id : data.id }, { $push : { posts : post } });
     return await User.findOne({ _id : data.id },{posts : 1});
